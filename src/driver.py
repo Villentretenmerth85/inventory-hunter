@@ -27,7 +27,7 @@ class Driver(ABC):
 class SeleniumDriver(Driver):
     def __init__(self, timeout):
         super().__init__(timeout)
-        self.driver_path = '/usr/local/bin/chromedriver'
+        self.driver_path = '/usr/bin/chromedriver'
         if not os.path.exists(self.driver_path):
             raise Exception(f'not found: {self.driver_path}')
 
