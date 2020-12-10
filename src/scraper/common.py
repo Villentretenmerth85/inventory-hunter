@@ -3,6 +3,9 @@ import logging
 import pathlib
 import re
 
+# required for price parsing logic
+locale.setlocale(locale.LC_ALL, '')
+
 from abc import ABC, abstractmethod
 from bs4 import BeautifulSoup
 

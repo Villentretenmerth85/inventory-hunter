@@ -1,3 +1,5 @@
 *.bak
+*~
 .idea/
 __pycache__
+.vagrant/
