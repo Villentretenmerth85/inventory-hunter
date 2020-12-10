@@ -1,6 +1,6 @@
 ---
 refresh_interval: 2 # seconds
-max_price: 15500 # dollars/euros/etc
+max_price: 12750 # dollars/euros/etc
 urls:
   - https://www.czc.cz/gigabyte-gt-1030-oc-2g-2gb-gddr5/225006/produkt # test
   - https://www.czc.cz/asus-geforce-dual-rtx3060ti-8g-8gb-gddr6/305626/produkt
@@ -9,8 +9,10 @@ urls:
   - https://www.czc.cz/asus-geforce-tuf-rtx3060ti-o8g-gaming-8gb-gddr6/305629/produkt
   - https://www.czc.cz/asus-geforce-rog-strix-rtx3060ti-8g-gaming-8gb-gddr6/305630/produkt
   - https://www.czc.cz/asus-geforce-rog-strix-rtx3060ti-o8g-gaming-8gb-gddr6/305631/produkt
+  - https://www.czc.cz/evga-geforce-rtx-3060-ti-ftw3-ultra-gaming-8gb-gddr6/306419/produkt
   - https://www.czc.cz/gainward-geforce-rtx-3060-ti-ghost-8gb-gddr6/305881/produkt
   - https://www.czc.cz/gainward-geforce-rtx-3060ti-ghost-oc-8gb-gddr6/305882/produkt
+  - https://www.czc.cz/gainward-geforce-rtx-3060ti-phoenix-gs-8g-gddr6/306299/produkt
   - https://www.czc.cz/gigabyte-geforce-rtx-3060-ti-eagle-8g-8gb-gddr6/305835/produkt
   - https://www.czc.cz/gigabyte-geforce-rtx-3060-ti-gaming-oc-8g-8gb-gddr6/305697/produkt
   - https://www.czc.cz/msi-geforce-rtx-3060-ti-ventus-2x-oc-8gb-gddr6/305699/produkt

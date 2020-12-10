@@ -1,8 +1,9 @@
 ---
 refresh_interval: 2 # seconds
-max_price: 15500 # dollars/euros/etc
+max_price: 17250 # dollars/euros/etc
 urls:
   - https://www.czc.cz/gigabyte-gt-1030-oc-2g-2gb-gddr5/225006/produkt # test
   - https://www.czc.cz/asus-radeon-tuf-rx6800-o16g-gaming-16gb-gddr6/305708/produkt
   - https://www.czc.cz/asus-radeon-rog-strix-rx6800-o16g-gaming-16gb-gddr6/305707/produkt
+  - https://www.czc.cz/sapphire-radeon-nitro-rx-6800-16g-oc-gaming-16gb-gddr6/306318/produkt
 ...

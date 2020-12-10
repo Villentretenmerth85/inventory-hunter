@@ -1,6 +1,6 @@
 ---
 refresh_interval: 2 # seconds
-max_price: 15500 # dollars/euros/etc
+max_price: 17250 # dollars/euros/etc
 urls:
   - https://www.alza.cz/gigabyte-gt-1030-silent-low-profile-2g-d4977528.htm # test
   - https://www.alza.cz/asrock-radeon-rx-6800-16g-d6244319.htm
