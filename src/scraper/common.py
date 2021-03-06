@@ -1,6 +1,5 @@
 import locale
 import logging
-import pathlib
 import re
 
 # required for price parsing logic
@@ -14,14 +13,19 @@ class ScrapeResult(ABC):
     def __init__(self, logger, r, last_result):
         self.alert_subject = None
         self.alert_content = None
+        self.captcha = False
+        self.forbidden = True if r.status_code == 403 else False
         self.logger = logger
         self.previously_in_stock = bool(last_result)
         self.price = None
+        self.price_pattern = re.compile('[0-9,.]+')
+        self.price_comma_pattern = re.compile('^.*\\,\\d{2}$')
         self.last_price = last_result.price if last_result is not None else None
         self.soup = BeautifulSoup(r.text, 'lxml')
         self.content = self.soup.body.text.lower()  # lower for case-insensitive searches
         self.url = r.url
-        self.parse()
+        if not self.forbidden:
+            self.parse()
 
     def __bool__(self):
         return bool(self.alert_content)
@@ -37,15 +41,23 @@ class ScrapeResult(ABC):
         if not price_str:
             return
 
+        re_match = self.price_pattern.search(price_str)
+        if not re_match:
+            self.logger.warning(f'unable to find price in string: "{price_str}"')
+            return
+
+        re_match_str = re_match.group()
+        if self.price_comma_pattern.match(re_match_str):
+            comma_index = re_match_str.rfind(',')
+            if comma_index != -1:
+                re_match_str = f'{re_match_str[:comma_index].replace(".", ",")}.{re_match_str[comma_index+1:]}'
+
         try:
-            # currency_symbol = locale.localeconv()['currency_symbol']
-            # self.price = locale.atof(price_str.replace(currency_symbol, '').strip())
-            currency_symbol = ",-"
-            price_without_currency = price_str.replace(currency_symbol, '')
-            self.price = int(re.sub(r"\s", "", price_without_currency))
-            return price_str if price_str else None
+            self.price = locale.atof(re_match_str)
         except Exception as e:
             self.logger.warning(f'unable to convert "{price_str}" to float... caught exception: {e}')
+
+        return price_str
 
     @abstractmethod
     def parse(self):
@@ -63,13 +75,10 @@ class GenericScrapeResult(ScrapeResult):
 class Scraper(ABC):
     def __init__(self, drivers, url):
         self.driver = getattr(drivers, self.get_driver_type())
+        self.filename = drivers.data_dir / f'{url.nickname}.html'
         self.logger = logging.getLogger(url.nickname)
         self.url = url
         self.last_result = None
-
-        data_dir = pathlib.Path('data').resolve()
-        data_dir.mkdir(exist_ok=True)
-        self.filename = data_dir / f'{url.nickname}.txt'
         self.logger.info(f'scraper initialized for {self.url}')
 
     @staticmethod
@@ -89,9 +98,8 @@ class Scraper(ABC):
 
     def scrape(self):
         try:
-            url = str(self.url)
             self.logger.debug('starting new scrape')
-            r = self.driver.get(url)
+            r = self.driver.get(self.url)
             with self.filename.open('w') as f:
                 f.write(r.text)
             result_type = self.get_result_type()

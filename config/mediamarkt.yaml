@@ -1,0 +1,7 @@
+---
+refresh_interval: 10 # seconds
+max_price: 3069 # PLN
+urls:
+  - https://www.mediaexpert.pl/gaming/playstation-4/konsole-ps4/konsola-sony-ps4-500gb-f-chassis # test
+  - https://www.mediaexpert.pl/gaming/playstation-5/konsole-ps5/konsola-sony-ps5-spider-man-miles-morales-tlou2-demons-soul-remake
+...

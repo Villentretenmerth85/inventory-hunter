@@ -20,7 +20,7 @@ alerter="email"
 default_image="ericjmarti/inventory-hunter:latest"
 image=$default_image
 
-while getopts a:c:d:e:i:q:r:w: arg
+while getopts a:c:d:e:i:q:r:w:t arg
 do
     case "${arg}" in
         a) alerter=${OPTARG};;
@@ -31,6 +31,7 @@ do
         q) alerter_config=${OPTARG};;
         r) relay=${OPTARG};;
         w) webhook=${OPTARG};;
+        t) test_alert=1;;
     esac
 done
 
@@ -52,7 +53,7 @@ fi
 if [ "$image" = "$default_image" ]; then
     docker pull "$image"
 else
-    result=$( docker images -q $image )
+    result=$(docker images -q $image)
     if [ -z "$result" ]; then
         echo "the $image docker image does not exist... please build the image and try again"
         echo "build command: docker build -t $image ."
@@ -75,9 +76,17 @@ else
     fi
 fi
 
-container_name=$(basename $config .yaml)
+script_dir=$(cd "$(dirname "$0")" && pwd -P)
+log_dir="$script_dir/log"
+mkdir -p $log_dir
 
-volumes="-v $config:/config.yaml"
+container_name=$(basename $config .yaml)
+data_dir="$script_dir/data/$container_name"
+log_file="$log_dir/$container_name.txt"
+mkdir -p $data_dir
+touch $log_file
+
+volumes="-v $data_dir:/data -v $log_file:/log.txt -v $config:/config.yaml"
 [ ! -z "$alerter_config" ] && volumes="$volumes -v $alerter_config:/alerters.yaml"
 
 docker_run_cmd="docker run -d --rm --name $container_name --network host $volumes $image --alerter $alerter"
@@ -92,10 +101,12 @@ else
         docker_run_cmd="$docker_run_cmd --chat-id $chat_id"
     fi
 fi
-
+if [ $test_alert ]; then
+    docker_run_cmd="$docker_run_cmd -t"
+fi
 docker_ps_cmd="docker ps -a -f name=$container_name"
 
-# echo "\$ $docker_run_cmd"
+echo "\$ $docker_run_cmd"
 eval $docker_run_cmd
 echo
 echo "started docker container named $container_name"
