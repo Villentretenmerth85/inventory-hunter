@@ -12,6 +12,7 @@ import scraper.samsclub
 import scraper.toysrus
 import scraper.walmart
 import scraper.mikescomputershop
+import scraper.mediamarkt
 
 from scraper.common import ScraperFactory
 

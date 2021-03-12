@@ -1,0 +1,7 @@
+---
+refresh_interval: 30 # seconds
+max_price: 3300 # dollars/euros/etc
+urls:
+  #- https://mediamarkt.pl/konsole-i-gry/playstation-4/konsole-ps4?offerFilter%5Bavailability_name%5D%5BDost%C4%99pny%21%5D=Dost%C4%99pny%21 #test
+  - https://mediamarkt.pl/konsole-i-gry/playstation-5/konsole-ps5?offerFilter%5Bavailability_name%5D%5BDost%C4%99pny%21%5D=Dost%C4%99pny%21
+...
